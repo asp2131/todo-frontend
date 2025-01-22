@@ -1,8 +1,16 @@
+# Todo List App Frontend
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+Before running the development server, make sure to set up your environment variables:
+
+1. Copy the `.env.example` file to `.env`:
+2. Set the `NEXT_PUBLIC_SERVER_URL` variable to the URL of the API server.
+3. Make sure the API server is running.
+
+Then, run the development server:
 
 ```bash
 npm run dev
@@ -16,21 +24,51 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Create, read, update, and delete tasks
+- Mark tasks as completed
+- Assign colors to tasks for better organization
+- Track task completion statistics
+- Responsive design for mobile and desktop
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+├── components/          # Reusable UI components
+│   ├── forms/          # Form-related components
+│   ├── task-list/      # Task list and card components
+│   └── ui/             # Basic UI components
+├── lib/
+│   ├── services/       # API service functions
+│   └── store/          # Global state management
+├── types/              # TypeScript type definitions
+└── src/
+    └── app/           # Next.js app router pages
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## State Management
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The app uses Zustand for state management. The task store (`useTaskStore`) handles:
+- Fetching tasks from the API
+- Adding new tasks
+- Updating existing tasks
+- Deleting tasks
+- Managing loading states and errors
 
-## Deploy on Vercel
+## API Integration
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The app requires a backend API server that supports the following endpoints:
+- `GET /tasks` - Fetch all tasks
+- `POST /tasks` - Create a new task
+- `PUT /tasks/:id` - Update a task
+- `DELETE /tasks/:id` - Delete a task
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Task Features
+
+Each task has the following properties:
+- Title: The task description
+- Color: Visual identifier (red, blue, green, etc.)
+- Completion Status: Track whether the task is done
+- ID: Unique identifier
+
