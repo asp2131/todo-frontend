@@ -40,3 +40,11 @@ export async function deleteTask(id: string): Promise<void> {
   });
   if (!res.ok) throw new Error("Failed to delete task");
 }
+
+export async function searchTasks(query: string): Promise<Task[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/tasks/search/:${query}`
+  );
+  if (!res.ok) throw new Error("Failed to search tasks");
+  return res.json();
+}

@@ -1,7 +1,7 @@
 // lib/store/use-task-store.ts
 import { create } from 'zustand';
 import { Task, TaskCreateInput, TaskUpdateInput } from '@/types/task';
-import { createTask, deleteTask, getTasks, updateTask } from '@/lib/services/tasks';
+import { createTask, deleteTask, getTasks, updateTask, searchTasks } from '@/lib/services/tasks';
 
 interface TaskStore {
   tasks: Task[];
@@ -14,6 +14,7 @@ interface TaskStore {
   removeTask: (id: string) => Promise<void>;
   updateTask: (id: string, task: TaskUpdateInput) => Promise<void>;
   setSelectedTask: (task: Task | null) => void;
+  searchTasks: (query: string) => Promise<void>;
 }
 
 export const useTaskStore = create<TaskStore>((set, get) => ({
@@ -72,6 +73,18 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
       set({ error: 'Failed to update task', isLoading: false });
     }
   },
+
+  searchTasks: async (query: string) => {
+    set({ isLoading: true, error: null });
+    try {
+      const tasks = await searchTasks(query);
+      console.log(tasks)
+      set({ tasks, isLoading: false });
+    } catch (error) {
+      set({ error: 'Failed to search tasks', isLoading: false });
+    }
+  },
+  
 
   setSelectedTask: (task: Task | null) => {
     set({ selectedTask: task });

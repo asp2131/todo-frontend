@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useTaskStore } from '@/lib/store/use-task-store';
 import TaskCard from '@/components/task-list/task-card';
@@ -8,14 +8,30 @@ import { cn } from '@/lib/utils';
 import { CirclePlus } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { ClipboardList } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+
+/*
+1 / fuse.js
+
+2 / search bar in the fronted (as you type / don’t overload the server)
+
+3 / backend route (fuse.js)
+
+4 / the models
+
+5 / 30 min timer
+*/
 
 export default function HomePage() {
   const router = useRouter();
-  const { tasks, isLoading, error, fetchTasks } = useTaskStore();
+  const { tasks, fetchTasks, searchTasks } = useTaskStore();
+  const [searchQuery, setSetQuery] = useState("")
 
   useEffect(() => {
     fetchTasks();
   }, [fetchTasks]);
+
+  
 
   const completedTasks = tasks.filter(task => task.completed).length;
 
@@ -26,6 +42,21 @@ export default function HomePage() {
         <div className="py-6">
           <Logo />
         </div>
+        {/*  Search Bar  */}
+        <Input
+                value={searchQuery}
+                onChange={async (e) => {
+                  console.log(e.target.value)
+                  setSetQuery(e.target.value)
+                  await searchTasks(e.target.value)
+                }}
+                placeholder="Search tasks..."
+                className={cn(
+                  "h-[54px] bg-[#262626] border-0",
+                  "rounded text-white placeholder:text-[#808080]",
+                  "focus:ring-1 focus:ring-[#4EA8DE]"
+                )}
+              />
 
         {/* Create Task Button */}
         <button
