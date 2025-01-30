@@ -46,8 +46,11 @@ export default function HomePage() {
         <Input
                 value={searchQuery}
                 onChange={async (e) => {
-                  console.log(e.target.value)
                   setSetQuery(e.target.value)
+                  if(e.target.value === "") {
+                    fetchTasks()
+                    return
+                  }
                   await searchTasks(e.target.value)
                 }}
                 placeholder="Search tasks..."

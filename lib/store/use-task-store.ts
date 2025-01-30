@@ -78,7 +78,6 @@ export const useTaskStore = create<TaskStore>((set, get) => ({
     set({ isLoading: true, error: null });
     try {
       const tasks = await searchTasks(query);
-      console.log(tasks)
       set({ tasks, isLoading: false });
     } catch (error) {
       set({ error: 'Failed to search tasks', isLoading: false });
